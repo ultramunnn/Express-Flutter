@@ -35,6 +35,7 @@ const findPost = async (req, res) => {
             data: posts,
         });
     } catch(error){
+        console.error(error)
         res.status(500).send({
             success: false,
             message: "Internal server error",
@@ -75,6 +76,7 @@ const createPost = async (req, res) => {
         });
 
     }catch(error){
+        console.error(error);
         res.status(500).send({
             success:false,
             message: 'Internal server error',
@@ -111,6 +113,7 @@ const findPostById = async(req,res) => {
         });
 
     }catch(error){
+        console.error(error)
         res.status(500).send({
             success: false,
             message: 'Internal server error',
@@ -189,15 +192,60 @@ const updatePost = async (req, res) => {
         });
 
     } catch (error) {
-
+        console.error(error)
         res.status(500).send({
             success: false,
             message: 'Internal servers error'
         });
         
     }
+
 }
 
 
+    //function deletePost
+    const deletePost = async (req, res) => {
 
-module.exports = { findPost, createPost, findPostById, updatePost };
+        //get ID from params
+        const { id } = req.params;
+
+        try {
+
+            //delete post
+            const post = await prisma.post.delete({
+                where: {
+                    id: Number(id),
+                },
+            });
+
+            if (post && post.image) {
+                // Bangun path lengkap ke file lama
+                const imagePath = path.join(process.cwd(), 'uploads', post.image);
+
+                // Hapus gambar lama jika file ada
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                } else {
+                    console.log('File tidak ditemukan:', imagePath);
+                }
+            }
+
+            //send response
+            res.status(200).send({
+                success: true,
+                message: 'Post deleted successfully',
+            });
+
+        } catch (error) {
+            console.error(error)
+            res.status(500).send({
+                success: false,
+                message: "Internal server error",
+            });
+        }
+
+    };
+
+
+
+module.exports = { findPost, createPost, findPostById, updatePost, deletePost };

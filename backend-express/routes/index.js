@@ -24,6 +24,10 @@ router.get('/posts/:id', postController.findPostById);
 
 //define route for post update
 router.put('/posts/:id', upload.single('image'), validatePost, postController.updatePost);
+
+//define route for post delete
+router.delete('/posts/:id', postController.deletePost);
+
 //export router
 module.exports = router;
 

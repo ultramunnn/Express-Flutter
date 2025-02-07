@@ -11,7 +11,8 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://root:root0506@localhost:3306/db_express"
+
 }
 
 
