@@ -20,12 +20,16 @@ const storage = multer.diskStorage({
     },
     //Menentukan nama file yang disimpan 
     filename: (req, file, cb) => {
+
+        if(!file.originalname){
+            return cb(new Error('File tidak memiliki nama yang valid'), false);
+        }
        
         //Menghasilkan hash unik untuk nama file 
-        const fileHash =crypto.randomBytes(16).toString('hex');
+        const fileHash = crypto.randomBytes(16).toString('hex');
        
         //Mengambil extensi file dari nama file asli
-        const ext = path.extname(file.originaname).toLowerCase();
+        const ext = path.extname(file.originalname).toLowerCase();
        
         //Menyusun nama file baru dengan hash dan ekstensi
         cb(null, `${fileHash}${ext}`);
@@ -34,9 +38,14 @@ const storage = multer.diskStorage({
 
 //Filter file multer
 const fileFilter = (req, file, cb)=> {
+   
+
+    if(!file || !file.originalname){
+        return cb(new Error('Tidak ada file yang diunggah'), false);
+    }
     
     //Mengambil ekstensi file dari nama file asli 
-    const ext = path.extnamea(file.originaname).toLowerCase();
+    const ext = path.extname(file.originalname).toLowerCase();
 
     //Memeriksa apakah ekstensi file termasuk dalam daftar ekstensi yang diizinkan
     if (allowedExtension.includes(ext)){
@@ -56,4 +65,8 @@ const upload = multer({
 
 // Mengekspor konfigurasi upload agar dapat digunakan di tempat lain
 module.exports = upload;
+
+
+
+
 
