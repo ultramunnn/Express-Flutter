@@ -37,11 +37,12 @@ app.get('/', (req, res) => {
 app.use('/api', router);
 
 //Route to serve uploade diles (if needed)
-app.get('uploads/:filename', (req, res) => {
+app.get('/uploads/:filename', (req, res) => {
     res.sendFile(path.join(__dirname, 'uploads', req.params.filename));
 });
 
 //start server
-app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-})
+app.listen(port, '0.0.0.0', () => {
+    console.log('Server running on http://0.0.0.0:3000');
+  });
+  
