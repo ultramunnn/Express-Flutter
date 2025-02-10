@@ -1,3 +1,4 @@
+import 'package:belajar_flutter/screen/add_edit%20_post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:belajar_flutter/cubit/post_cubit.dart';
@@ -50,7 +51,18 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          var result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddEditPostScreen(),
+            ),
+          );
+
+          if (result == true) {
+            loadPost();
+          }
+        },
         child: Icon(Icons.add),
       ),
     );
