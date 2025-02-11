@@ -120,6 +120,14 @@ class _AddEditPostScreenState extends State<AddEditPostScreen> {
               ),
             );
           }
+          if (state is PostDeleted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
         },
         child: Form(
           key: _formkey,

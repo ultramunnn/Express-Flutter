@@ -149,7 +149,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () {
-                            // delete post
+                            context.read<PostCubit>().deletePost(post.id ?? 0);
+                            setState(() {
+                              posts.removeWhere(
+                                  (post) => post.id == posts[index].id);
+                            });
                           },
                         ),
                       ],
