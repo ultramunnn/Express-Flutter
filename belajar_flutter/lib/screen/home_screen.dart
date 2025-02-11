@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Image.network(
-                            'http://192.168.1.8:3000/uploads/${post.image}',
+                            'http://192.168.100.205:3000/uploads/${post.image}',
                             height: 90,
                             width: 90,
                             fit: BoxFit.cover,
@@ -135,8 +135,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         IconButton(
-                          onPressed: () {
-                            // Edit Post
+                          onPressed: () async {
+                            var result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    AddEditPostScreen(post: post),
+                              ),
+                            );
                           },
                           icon: Icon(Icons.edit),
                         ),

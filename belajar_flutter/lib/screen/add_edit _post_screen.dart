@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:belajar_flutter/cubit/post_cubit.dart';
+import 'package:belajar_flutter/model/post.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddEditPostScreen extends StatefulWidget {
-  const AddEditPostScreen({super.key});
+  final Post? post;
+  const AddEditPostScreen({super.key, this.post});
 
   @override
   State<AddEditPostScreen> createState() => _AddEditPostScreenState();
@@ -46,6 +48,10 @@ class _AddEditPostScreenState extends State<AddEditPostScreen> {
   @override
   void initState() {
     postCubit = PostCubit();
+    if (widget.post != null) {
+      _titleController.text = widget.post?.title ?? "";
+      _contentController.text = widget.post?.content ?? "";
+    }
     super.initState();
   }
 
@@ -81,7 +87,7 @@ class _AddEditPostScreenState extends State<AddEditPostScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add New Post',
+          widget.post == null ? 'Add New Post' : "Edit Post",
         ),
       ),
       body: BlocListener<PostCubit, PostState>(
@@ -102,6 +108,15 @@ class _AddEditPostScreenState extends State<AddEditPostScreen> {
               SnackBar(
                 content: Text(state.message),
                 backgroundColor: Colors.red,
+              ),
+            );
+          }
+
+          if (state is PostUpdated) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.green,
               ),
             );
           }
@@ -129,11 +144,9 @@ class _AddEditPostScreenState extends State<AddEditPostScreen> {
                     onPressed: getImage,
                     child: Text('Selected Image'),
                   ),
-
-                   const SizedBox(
+                  const SizedBox(
                     height: 8.0,
                   ),
-                  
                   TextFormField(
                     controller: _titleController,
                     focusNode: _titleFocus,
@@ -178,7 +191,7 @@ class _AddEditPostScreenState extends State<AddEditPostScreen> {
                     width: double.infinity,
                     child: FilledButton(
                       onPressed: _submitData,
-                      child: Text('Submit'),
+                      child: Text(widget.post == null ? 'Submit' : 'Update'),
                     ),
                   )
                 ],

@@ -7,7 +7,7 @@ import 'package:either_dart/either.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteResource {
-  final baseUrl = 'http://192.168.1.8:3000/api';
+  final baseUrl = 'http://192.168.100.205:3000/api';
 
   Future<Either<String, List<Post>>> fetchPost() async {
     try {
